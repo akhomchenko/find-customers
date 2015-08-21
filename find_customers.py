@@ -57,18 +57,6 @@ def great_circle_distance(first, second):
     return EARTH_RADIUS * d
 
 
-def read_customers(file):
-    """
-    Reads list of customers from `file` object
-
-    :return: generator with `Customer`s
-    """
-    for line in file:
-        line = line.rstrip()
-        if line:
-            yield parse_customer(line)
-
-
 def parse_customer(string):
     """
     Parses JSON representation of customer from `string`
@@ -112,8 +100,8 @@ def cli(file, distance, center):
     """
     Finds customers within specified range near specified point
     """
-    # customers = (parse_customer(line) for line in file if not line.isspace())
-    customers = read_customers(file)
+    customers = (parse_customer(line.rstrip())
+                 for line in file if not line.isspace())
     matching_customers = find_closest_customers(customers, distance=distance,
                                                 center=center)
 
